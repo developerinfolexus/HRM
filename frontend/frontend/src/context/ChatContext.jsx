@@ -36,7 +36,15 @@ export const ChatProvider = ({ children }) => {
     useEffect(() => {
         if (!user) return;
 
-        const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || 'http://localhost:5000';
+        let SOCKET_URL = import.meta.env.VITE_SOCKET_URL;
+
+        if (!SOCKET_URL) {
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                SOCKET_URL = 'http://localhost:5000';
+            } else {
+                SOCKET_URL = 'https://hrm-backend-b3sz.onrender.com';
+            }
+        }
         const newSocket = io(SOCKET_URL, {
             auth: {
                 token: localStorage.getItem('token')

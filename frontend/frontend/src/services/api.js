@@ -1,6 +1,16 @@
 import axios from 'axios';
 
-let API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+let API_URL = import.meta.env.VITE_API_URL;
+
+// If env var is missing, determine based on hostname
+if (!API_URL) {
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        API_URL = 'http://localhost:5000/api';
+    } else {
+        // Fallback for production if env var is missing
+        API_URL = 'https://hrm-backend-b3sz.onrender.com/api';
+    }
+}
 
 // Normalize URL to ensure it ends with /api
 if (!API_URL.endsWith('/api')) {
