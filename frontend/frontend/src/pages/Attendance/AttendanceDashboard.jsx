@@ -6,7 +6,7 @@ import {
   FiXCircle,
 } from "react-icons/fi";
 import employeeService from "../../services/employeeService";
-import "../../css/attendences.css";
+import "../../css/Attendences.css";
 
 // Corporate Pro card style
 const card = {
