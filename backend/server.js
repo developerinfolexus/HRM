@@ -23,8 +23,9 @@ connectDB()
             'https://hrm-rykg.onrender.com',
             process.env.CLIENT_URL
           ].filter(Boolean),
-          methods: ['GET', 'POST'],
-          credentials: true
+          methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+          credentials: true,
+          allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept']
         }
       });
 

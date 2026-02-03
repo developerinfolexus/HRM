@@ -14,21 +14,26 @@ const allowedOrigins = [
     process.env.CLIENT_URL
 ].filter(Boolean);
 
+app.get('/', (req, res) => res.send('API Running'));
+
 app.use(cors({
     origin: function (origin, callback) {
-        // Allow requests with no origin (like mobile apps or curl requests)
         if (!origin) return callback(null, true);
 
-        if (allowedOrigins.indexOf(origin) !== -1) {
+        if (allowedOrigins.indexOf(origin) !== -1 || allowedOrigins.includes(origin)) {
             callback(null, true);
         } else {
+            console.log('CORS Blocked:', origin); // Debug log for cloud logs
             callback(new Error('Not allowed by CORS'));
         }
     },
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept']
 }));
+
+// Handle OPTIONS preflight manually for robustness
+app.options('*', cors());
 
 // Body parser middleware
 app.use(express.json({ limit: '50mb' }));
