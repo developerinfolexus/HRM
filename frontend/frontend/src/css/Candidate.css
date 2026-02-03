@@ -439,6 +439,14 @@
 }
 
 @media (max-width: 576px) {
+  .candidate-page {
+    padding: 15px 10px;
+  }
+
+  .form-card {
+    padding: 20px;
+  }
+
   .form-grid {
     grid-template-columns: 1fr;
   }
@@ -446,7 +454,18 @@
   .form-item.full-width {
     grid-column: span 1;
   }
+
+  .page-title {
+    font-size: 1.5rem;
+  }
 }
+
+/* Ensure inputs take full width */
+.control {
+  width: 100%;
+  box-sizing: border-box;
+}
+
 
 /* ===========================
    3. ATS & Resume Details

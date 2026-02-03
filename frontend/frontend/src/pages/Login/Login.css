@@ -41,49 +41,49 @@
 
 /* Role Selection Styles */
 .role-group {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 25px;
+  display: flex;
+  gap: 12px;
+  margin-bottom: 25px;
 }
 
 .role-option {
-    flex: 1;
-    position: relative;
+  flex: 1;
+  position: relative;
 }
 
 .role-option input[type="radio"] {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-    height: 0;
-    width: 0;
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
 }
 
 .role-label {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 12px;
-    background: rgba(163, 119, 157, 0.1);
-    border: 1px solid rgba(163, 119, 157, 0.2);
-    border-radius: 12px;
-    color: #A3779D;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    font-size: 14px;
-    font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  background: rgba(163, 119, 157, 0.1);
+  border: 1px solid rgba(163, 119, 157, 0.2);
+  border-radius: 12px;
+  color: #A3779D;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 14px;
+  font-weight: 600;
 }
 
-.role-option input[type="radio"]:checked ~ .role-label {
-    background: #663399;
-    border-color: #A3779D;
-    color: #fff;
-    box-shadow: 0 4px 15px rgba(102, 51, 153, 0.4);
+.role-option input[type="radio"]:checked~.role-label {
+  background: #663399;
+  border-color: #A3779D;
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(102, 51, 153, 0.4);
 }
 
 .role-label:hover:not(.role-option input[type="radio"]:checked ~ .role-label) {
-    background: rgba(163, 119, 157, 0.2);
-    border-color: rgba(163, 119, 157, 0.3);
+  background: rgba(163, 119, 157, 0.2);
+  border-color: rgba(163, 119, 157, 0.3);
 }
 
 .form-group {
@@ -139,7 +139,7 @@
 }
 
 .login-btn:active {
-    transform: translateY(0);
+  transform: translateY(0);
 }
 
 .login-btn:disabled {
@@ -170,9 +170,20 @@
 
 /* Custom Scrollbar for form if needed */
 .login-card::-webkit-scrollbar {
-    width: 6px;
+  width: 6px;
 }
+
 .login-card::-webkit-scrollbar-thumb {
-    background: rgba(163, 119, 157, 0.3);
-    border-radius: 10px;
+  background: rgba(163, 119, 157, 0.3);
+  border-radius: 10px;
+}
+
+@media (max-width: 480px) {
+  .login-card {
+    padding: 24px;
+  }
+
+  .login-header h1 {
+    font-size: 24px;
+  }
 }

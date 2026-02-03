@@ -128,7 +128,7 @@ export default function NewAnnouncement({ open, initial = null, onClose, onSave 
               </div>
 
               <div className="row g-4 align-items-end">
-                <div className="col-md-5">
+                <div className="col-12 col-md-5">
                   <label className="small fw-bold mb-2 d-block" style={{ color: '#2E1A47' }}>Target Audience Segment</label>
                   <select
                     name="audience"
@@ -145,7 +145,7 @@ export default function NewAnnouncement({ open, initial = null, onClose, onSave 
                   </select>
                 </div>
 
-                <div className="col-md-7">
+                <div className="col-12 col-md-7">
                   <div className="p-3 rounded-2xl border d-flex flex-column gap-3" style={{ backgroundColor: '#fdfbff', borderColor: '#E6C7E6' }}>
                     <div className="form-check form-switch d-flex align-items-center gap-2 ps-0">
                       <input

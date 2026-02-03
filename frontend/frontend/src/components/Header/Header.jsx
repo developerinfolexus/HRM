@@ -8,7 +8,7 @@ import {
 } from "react-icons/fa";
 import ProfileModal from './ProfileModal';
 
-const Header = ({ sidebarWidth = 250, collapsed, setCollapsed, darkMode, setDarkMode }) => {
+const Header = ({ sidebarWidth = 250, collapsed, setCollapsed, darkMode, setDarkMode, isMobile }) => {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
 
@@ -100,7 +100,7 @@ const Header = ({ sidebarWidth = 250, collapsed, setCollapsed, darkMode, setDark
   const headerStyle = {
     position: "fixed",
     top: 0,
-    left: sidebarWidth,
+    left: isMobile ? 0 : sidebarWidth,
     right: 0,
     height: 70,
     display: "flex",
@@ -133,7 +133,7 @@ const Header = ({ sidebarWidth = 250, collapsed, setCollapsed, darkMode, setDark
           title="Go to Home"
           style={{
             color: darkMode ? "#fff" : "#663399",
-            display: 'flex',
+            display: isMobile ? 'none' : 'flex',
             alignItems: 'center',
             gap: '8px',
             fontSize: '14px',
@@ -146,7 +146,7 @@ const Header = ({ sidebarWidth = 250, collapsed, setCollapsed, darkMode, setDark
 
         <div
           style={{
-            display: "flex",
+            display: isMobile ? 'none' : "flex",
             alignItems: "center",
             gap: 10,
             background: darkMode ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)",
@@ -173,7 +173,7 @@ const Header = ({ sidebarWidth = 250, collapsed, setCollapsed, darkMode, setDark
 
       {/* right: time, theme, notifications, messages, profile */}
       <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-        <div style={{ color: darkMode ? "#fff" : "#111", fontWeight: 600 }}>{time}</div>
+        <div style={{ color: darkMode ? "#fff" : "#111", fontWeight: 600, display: isMobile ? 'none' : 'block' }}>{time}</div>
 
         <div onClick={() => setDarkMode(!darkMode)} style={{ cursor: "pointer" }}>
           {darkMode ? <FaSun style={{ color: "#E6C7E6" }} /> : <FaMoon style={{ color: "#663399" }} />}

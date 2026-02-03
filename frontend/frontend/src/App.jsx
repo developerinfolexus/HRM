@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { Toaster } from 'react-hot-toast';
 import { ToastContainer } from 'react-toastify';
@@ -105,12 +105,27 @@ import EmployeeLayout from "./EmployeePanel/EmployeeLayout";
 const AppLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const location = useLocation();
   const isAuthPage = location.pathname === '/login' || location.pathname === '/register' || location.pathname === '/walkthrough';
   const hideSidebarAndHeader = isAuthPage || location.pathname === '/home';
   // Only match employee panel routes (/employee/...), not /employees
   const isEmployeePage = location.pathname.startsWith('/employee/') || location.pathname === '/employee';
-  const sidebarWidth = collapsed ? 80 : 250;
+
+  // Handle window resize
+  React.useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      if (mobile) {
+        setCollapsed(true);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const sidebarWidth = isMobile ? 0 : (collapsed ? 80 : 250);
 
   if (isEmployeePage) {
     return (
@@ -129,6 +144,7 @@ const AppLayout = () => {
             setCollapsed={setCollapsed}
             darkMode={darkMode}
             setDarkMode={setDarkMode}
+            isMobile={isMobile}
           />
 
           <Header
@@ -137,6 +153,7 @@ const AppLayout = () => {
             darkMode={darkMode}
             setDarkMode={setDarkMode}
             sidebarWidth={sidebarWidth}
+            isMobile={isMobile}
           />
         </>
       )}

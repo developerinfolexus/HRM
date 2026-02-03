@@ -58,6 +58,8 @@
     color: #2E1A47;
     transition: all 0.3s ease;
     background: white;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .field-input:focus,

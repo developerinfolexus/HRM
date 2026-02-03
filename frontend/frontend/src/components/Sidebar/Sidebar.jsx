@@ -10,7 +10,7 @@ import { FaRobot } from "react-icons/fa6";
 import { FiCheckCircle, FiImage } from "react-icons/fi";
 import { useChat } from "../../context/ChatContext";
 
-const Sidebar = ({ collapsed, setCollapsed, darkMode, setDarkMode }) => {
+const Sidebar = ({ collapsed, setCollapsed, darkMode, setDarkMode, isMobile }) => {
   const location = useLocation();
   const { totalUnreadCount } = useChat();
 
@@ -46,7 +46,7 @@ const Sidebar = ({ collapsed, setCollapsed, darkMode, setDarkMode }) => {
   ];
 
   const sidebarStyle = {
-    width: collapsed ? "80px" : "260px",
+    width: isMobile ? (collapsed ? "0px" : "260px") : (collapsed ? "80px" : "260px"),
     transition: "all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1)",
     height: "100vh",
     position: "fixed",
@@ -58,143 +58,164 @@ const Sidebar = ({ collapsed, setCollapsed, darkMode, setDarkMode }) => {
     background: "rgb(230, 199, 230)", // User requested color
     borderRight: "1px solid rgba(163, 119, 157, 0.2)", // Soft Violet with opacity
     color: "#2E1A47", // Lilac Mist
-    boxShadow: "4px 0 24px -4px rgba(0,0,0,0.3)"
+    boxShadow: "4px 0 24px -4px rgba(0,0,0,0.3)",
+    transform: isMobile && collapsed ? "translateX(-100%)" : "translateX(0)",
+    opacity: isMobile && collapsed ? 0 : 1
   };
 
+
+
   return (
-    <div className="d-flex flex-column px-3 pb-4 custom-scrollbar" style={sidebarStyle}>
-      {/* Header Area */}
-      <div className="d-flex justify-content-between align-items-center mb-5 px-2">
-        {!collapsed && (
-          <div className="d-flex align-items-center justify-content-center w-100">
-            <img
-              src={logo}
-              alt="HRM Logo"
-              style={{ width: "160px", height: "auto", objectFit: 'contain' }}
-            />
-          </div>
-        )}
-
-        <FaBars
-          className="fs-5"
-          role="button"
-          onClick={() => setCollapsed(!collapsed)}
-          style={{ cursor: "pointer", opacity: 0.8, color: "#A3779D" }}
+    <>
+      {isMobile && !collapsed && (
+        <div
+          onClick={() => setCollapsed(true)}
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: "rgba(0,0,0,0.5)",
+            zIndex: 1099,
+            backdropFilter: "blur(2px)"
+          }}
         />
-      </div>
+      )}
+      <div className="d-flex flex-column px-3 pb-4 custom-scrollbar" style={sidebarStyle}>
+        {/* Header Area */}
+        <div className="d-flex justify-content-between align-items-center mb-5 px-2">
+          {!collapsed && (
+            <div className="d-flex align-items-center justify-content-center w-100">
+              <img
+                src={logo}
+                alt="HRM Logo"
+                style={{ width: "160px", height: "auto", objectFit: 'contain' }}
+              />
+            </div>
+          )}
 
-      {/* Menu Items */}
-      <ul className="nav nav-pills flex-column gap-1">
-        {menuItems.map((item, i) => {
-          const active = location.pathname === item.path;
+          <FaBars
+            className="fs-5"
+            role="button"
+            onClick={() => setCollapsed(!collapsed)}
+            style={{ cursor: "pointer", opacity: 0.8, color: "#A3779D" }}
+          />
+        </div>
 
-          return (
-            <li key={i} className="nav-item">
-              <Link
-                to={item.path}
-                className="nav-link d-flex align-items-center text-decoration-none"
-                style={{
-                  color: active
-                    ? "#fff"
-                    : "#2E1A47",
-                  background: active
-                    ? "linear-gradient(90deg, #663399 0%, #5B2D8A 100%)"
-                    : "transparent",
-                  borderRadius: "14px",
-                  padding: collapsed ? "12px 0" : "12px 16px",
-                  justifyContent: collapsed ? "center" : "flex-start",
-                  transition: "all 0.3s ease",
-                  fontWeight: active ? "700" : "500",
-                  borderLeft: active ? "4px solid #A3779D" : "4px solid transparent",
-                  boxShadow: active ? "0 4px 12px rgba(102, 51, 153, 0.3)" : "none"
-                }}
-                onMouseEnter={(e) => {
-                  if (!active) e.currentTarget.style.background = "rgba(102, 51, 153, 0.1)";
-                }}
-                onMouseLeave={(e) => {
-                  if (!active) e.currentTarget.style.background = "transparent";
-                }}
-              >
-                <span
-                  className="fs-5 d-flex align-items-center"
+        {/* Menu Items */}
+        <ul className="nav nav-pills flex-column gap-1">
+          {menuItems.map((item, i) => {
+            const active = location.pathname === item.path;
+
+            return (
+              <li key={i} className="nav-item">
+                <Link
+                  to={item.path}
+                  className="nav-link d-flex align-items-center text-decoration-none"
                   style={{
-                    color: active ? "#E6C7E6" : "#A3779D",
-                    marginRight: collapsed ? "0" : "16px"
+                    color: active
+                      ? "#fff"
+                      : "#2E1A47",
+                    background: active
+                      ? "linear-gradient(90deg, #663399 0%, #5B2D8A 100%)"
+                      : "transparent",
+                    borderRadius: "14px",
+                    padding: collapsed ? "12px 0" : "12px 16px",
+                    justifyContent: collapsed ? "center" : "flex-start",
+                    transition: "all 0.3s ease",
+                    fontWeight: active ? "700" : "500",
+                    borderLeft: active ? "4px solid #A3779D" : "4px solid transparent",
+                    boxShadow: active ? "0 4px 12px rgba(102, 51, 153, 0.3)" : "none"
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!active) e.currentTarget.style.background = "rgba(102, 51, 153, 0.1)";
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!active) e.currentTarget.style.background = "transparent";
                   }}
                 >
-                  {item.icon}
-                </span>
-
-                {!collapsed && <span style={{ fontSize: "0.95rem" }}>{item.label}</span>}
-
-                {item.badge && (
                   <span
+                    className="fs-5 d-flex align-items-center"
                     style={{
-                      marginLeft: collapsed ? "0" : "auto",
-                      position: collapsed ? "absolute" : "relative",
-                      top: collapsed ? "4px" : "auto",
-                      right: collapsed ? "4px" : "auto",
-                      background: "#FF3E1D",
-                      color: "white",
-                      fontSize: "0.7rem",
-                      fontWeight: "700",
-                      minWidth: "18px",
-                      height: "18px",
-                      borderRadius: "50%",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      padding: "2px",
-                      boxShadow: "0 2px 4px rgba(255, 62, 29, 0.4)",
-                      border: "2px solid rgb(230, 199, 230)"
+                      color: active ? "#E6C7E6" : "#A3779D",
+                      marginRight: collapsed ? "0" : "16px"
                     }}
                   >
-                    {item.badge}
+                    {item.icon}
                   </span>
-                )}
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
 
-      <div style={{ flex: 1 }} />
+                  {!collapsed && <span style={{ fontSize: "0.95rem" }}>{item.label}</span>}
 
-      {/* User Profile Section */}
-      {!collapsed && (
-        <div
-          className="mt-4 mb-2 p-3 rounded-4 d-flex align-items-center gap-3"
-          style={{
-            background: "rgba(102, 51, 153, 0.2)", // Transparent Royal Amethyst
-            border: "1px solid rgba(163, 119, 157, 0.3)",
-            backdropFilter: "blur(4px)",
-            WebkitBackdropFilter: "blur(4px)"
-          }}
-        >
-          <img
-            src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
-            alt="User"
+                  {item.badge && (
+                    <span
+                      style={{
+                        marginLeft: collapsed ? "0" : "auto",
+                        position: collapsed ? "absolute" : "relative",
+                        top: collapsed ? "4px" : "auto",
+                        right: collapsed ? "4px" : "auto",
+                        background: "#FF3E1D",
+                        color: "white",
+                        fontSize: "0.7rem",
+                        fontWeight: "700",
+                        minWidth: "18px",
+                        height: "18px",
+                        borderRadius: "50%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        padding: "2px",
+                        boxShadow: "0 2px 4px rgba(255, 62, 29, 0.4)",
+                        border: "2px solid rgb(230, 199, 230)"
+                      }}
+                    >
+                      {item.badge}
+                    </span>
+                  )}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+
+        <div style={{ flex: 1 }} />
+
+        {/* User Profile Section */}
+        {!collapsed && (
+          <div
+            className="mt-4 mb-2 p-3 rounded-4 d-flex align-items-center gap-3"
             style={{
-              width: 40,
-              height: 40,
-              borderRadius: "50%",
-              objectFit: "cover",
-              border: "2px solid #A3779D",
-              boxShadow: "0 2px 5px rgba(0,0,0,0.2)"
+              background: "rgba(102, 51, 153, 0.2)", // Transparent Royal Amethyst
+              border: "1px solid rgba(163, 119, 157, 0.3)",
+              backdropFilter: "blur(4px)",
+              WebkitBackdropFilter: "blur(4px)"
             }}
-          />
+          >
+            <img
+              src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+              alt="User"
+              style={{
+                width: 40,
+                height: 40,
+                borderRadius: "50%",
+                objectFit: "cover",
+                border: "2px solid #A3779D",
+                boxShadow: "0 2px 5px rgba(0,0,0,0.2)"
+              }}
+            />
 
-          <div style={{ lineHeight: "1.2" }}>
-            <div style={{ fontSize: "0.85rem", fontWeight: "700", color: "#2E1A47" }}>
-              Admin
-            </div>
-            <div style={{ fontSize: "0.75rem", color: "#555" }}>
-              HR Manager
+            <div style={{ lineHeight: "1.2" }}>
+              <div style={{ fontSize: "0.85rem", fontWeight: "700", color: "#2E1A47" }}>
+                Admin
+              </div>
+              <div style={{ fontSize: "0.75rem", color: "#555" }}>
+                HR Manager
+              </div>
             </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </>
   );
 };
 

@@ -82,7 +82,7 @@ const labelStyle = {
 
 const inputStyle = (hasError) => ({
   width: "100%",
-  padding: "0.625rem 0.875rem",
+  padding: "0.75rem 1rem",
   fontSize: "0.95rem",
   lineHeight: "1.25rem",
   color: "#1f2937",
@@ -321,7 +321,7 @@ export default function AddEmployee({
             {/* Personal Info */}
             <div style={{ ...sectionTitleStyle, marginTop: 0 }}>Personal Information</div>
             <div className="row g-4">
-              <div className="col-md-6">
+              <div className="col-12 col-md-6">
                 <div style={inputGroupStyle}>
                   <label style={labelStyle}>First Name <span className="text-danger">*</span></label>
                   <input
@@ -335,7 +335,7 @@ export default function AddEmployee({
                 </div>
               </div>
 
-              <div className="col-md-6">
+              <div className="col-12 col-md-6">
                 <div style={inputGroupStyle}>
                   <label style={labelStyle}>Last Name <span className="text-danger">*</span></label>
                   <input
@@ -349,7 +349,7 @@ export default function AddEmployee({
                 </div>
               </div>
 
-              <div className="col-md-6">
+              <div className="col-12 col-md-6">
                 <div style={inputGroupStyle}>
                   <label style={labelStyle}>Email Address <span className="text-danger">*</span></label>
                   <input
@@ -364,7 +364,7 @@ export default function AddEmployee({
                 </div>
               </div>
 
-              <div className="col-md-6">
+              <div className="col-12 col-md-6">
                 <div style={inputGroupStyle}>
                   <label style={labelStyle}>Phone Number <span className="text-danger">*</span></label>
                   <input
@@ -378,7 +378,7 @@ export default function AddEmployee({
                 </div>
               </div>
 
-              <div className="col-md-6">
+              <div className="col-12 col-md-6">
                 <div style={inputGroupStyle}>
                   <label style={labelStyle}>Date of Birth <span className="text-danger">*</span></label>
                   <input
@@ -392,7 +392,7 @@ export default function AddEmployee({
                 </div>
               </div>
 
-              <div className="col-md-6">
+              <div className="col-12 col-md-6">
                 <div style={inputGroupStyle}>
                   <label style={labelStyle}>Gender <span className="text-danger">*</span></label>
                   <select
@@ -423,7 +423,7 @@ export default function AddEmployee({
                 </div>
               </div>
 
-              <div className="col-md-6">
+              <div className="col-12 col-md-6">
                 <label style={labelStyle}>Profile Photo</label>
                 <div className="d-flex gap-3 align-items-center">
                   {previewUrl && (
@@ -465,7 +465,7 @@ export default function AddEmployee({
                 </div>
               </div>
 
-              <div className="col-md-6">
+              <div className="col-12 col-md-6">
                 <div style={inputGroupStyle}>
                   <label style={labelStyle}>City <span className="text-danger">*</span></label>
                   <input
@@ -478,7 +478,7 @@ export default function AddEmployee({
                 </div>
               </div>
 
-              <div className="col-md-6">
+              <div className="col-12 col-md-6">
                 <div style={inputGroupStyle}>
                   <label style={labelStyle}>State <span className="text-danger">*</span></label>
                   <input
@@ -491,7 +491,7 @@ export default function AddEmployee({
                 </div>
               </div>
 
-              <div className="col-md-6">
+              <div className="col-12 col-md-6">
                 <div style={inputGroupStyle}>
                   <label style={labelStyle}>Zip Code <span className="text-danger">*</span></label>
                   <input
@@ -504,7 +504,7 @@ export default function AddEmployee({
                 </div>
               </div>
 
-              <div className="col-md-6">
+              <div className="col-12 col-md-6">
                 <div style={inputGroupStyle}>
                   <label style={labelStyle}>Country</label>
                   <input
@@ -524,7 +524,7 @@ export default function AddEmployee({
 
 
               {/* Department */}
-              <div className="col-md-6">
+              <div className="col-12 col-md-6">
                 <div style={inputGroupStyle}>
                   <label style={labelStyle}>Department <span className="text-danger">*</span></label>
                   <select
@@ -567,7 +567,7 @@ export default function AddEmployee({
               </div>
 
               {/* Position - Already an Input, keeping it as is or adding suggestions? User said 'Task or Shift in option add other'. Position is input.*/}
-              <div className="col-md-6">
+              <div className="col-12 col-md-6">
                 <div style={inputGroupStyle}>
                   <label style={labelStyle}>Position <span className="text-danger">*</span></label>
                   <input
@@ -591,7 +591,7 @@ export default function AddEmployee({
               </div>
 
               {/* Domain Field */}
-              <div className="col-md-6">
+              <div className="col-12 col-md-6">
                 <div style={inputGroupStyle}>
                   <label style={labelStyle}>Domain / Specialization <span className="text-danger">*</span></label>
                   <input
@@ -614,7 +614,7 @@ export default function AddEmployee({
               </div>
 
               {/* Employee Type */}
-              <div className="col-md-6">
+              <div className="col-12 col-md-6">
                 <div style={inputGroupStyle}>
                   <label style={labelStyle}>Employee Type</label>
                   <select
@@ -646,7 +646,7 @@ export default function AddEmployee({
               </div>
 
               {/* Status */}
-              <div className="col-md-6">
+              <div className="col-12 col-md-6">
                 <div style={inputGroupStyle}>
                   <label style={labelStyle}>Status</label>
                   <select
@@ -679,7 +679,7 @@ export default function AddEmployee({
               </div>
 
               {/* Joining Date - Keep */}
-              <div className="col-md-6">
+              <div className="col-12 col-md-6">
                 <div style={inputGroupStyle}>
                   <label style={labelStyle}>Date of Joining <span className="text-danger">*</span></label>
                   <input
@@ -694,7 +694,7 @@ export default function AddEmployee({
               </div>
 
               {/* Work Location - Input with Datalist */}
-              <div className="col-md-6">
+              <div className="col-12 col-md-6">
                 <div style={inputGroupStyle}>
                   <label style={labelStyle}>Work Location <span className="text-danger">*</span></label>
                   <input
@@ -724,7 +724,7 @@ export default function AddEmployee({
                   If they type "Other", we don't know start/end time.
                   I will SKIP Shift for now as it requires complex object creation.
               */}
-              <div className="col-md-6">
+              <div className="col-12 col-md-6">
                 <div style={inputGroupStyle}>
                   <label style={labelStyle}>Shift</label>
                   <select
@@ -743,7 +743,7 @@ export default function AddEmployee({
                 </div>
               </div>
 
-              <div className="col-md-6">
+              <div className="col-12 col-md-6">
                 <div style={inputGroupStyle}>
                   <label style={labelStyle}>Basic Salary <span className="text-danger">*</span></label>
                   <input
@@ -761,7 +761,7 @@ export default function AddEmployee({
             {/* Emergency Contact */}
             <div style={sectionTitleStyle}>Emergency Contact</div>
             <div className="row g-4">
-              <div className="col-md-6">
+              <div className="col-12 col-md-6">
                 <div style={inputGroupStyle}>
                   <label style={labelStyle}>Contact Name <span className="text-danger">*</span></label>
                   <input
@@ -773,7 +773,7 @@ export default function AddEmployee({
                   {errors.emergencyContactName && <div className="small text-danger mt-1">{errors.emergencyContactName}</div>}
                 </div>
               </div>
-              <div className="col-md-6">
+              <div className="col-12 col-md-6">
                 <div style={inputGroupStyle}>
                   <label style={labelStyle}>Contact Phone <span className="text-danger">*</span></label>
                   <input
@@ -785,7 +785,7 @@ export default function AddEmployee({
                   {errors.emergencyContactPhone && <div className="small text-danger mt-1">{errors.emergencyContactPhone}</div>}
                 </div>
               </div>
-              <div className="col-md-6">
+              <div className="col-12 col-md-6">
                 <div style={inputGroupStyle}>
                   <label style={labelStyle}>Relation <span className="text-danger">*</span></label>
                   <input
@@ -802,7 +802,7 @@ export default function AddEmployee({
             {/* Bank Details */}
             <div style={sectionTitleStyle}>Bank Information</div>
             <div className="row g-4">
-              <div className="col-md-6">
+              <div className="col-12 col-md-6">
                 <div style={inputGroupStyle}>
                   <label style={labelStyle}>Account Number</label>
                   <input
@@ -814,7 +814,7 @@ export default function AddEmployee({
                   />
                 </div>
               </div>
-              <div className="col-md-6">
+              <div className="col-12 col-md-6">
                 <div style={inputGroupStyle}>
                   <label style={labelStyle}>Holder Name</label>
                   <input
@@ -826,7 +826,7 @@ export default function AddEmployee({
                   />
                 </div>
               </div>
-              <div className="col-md-6">
+              <div className="col-12 col-md-6">
                 <div style={inputGroupStyle}>
                   <label style={labelStyle}>IFSC Code</label>
                   <input
@@ -838,7 +838,7 @@ export default function AddEmployee({
                   />
                 </div>
               </div>
-              <div className="col-md-6">
+              <div className="col-12 col-md-6">
                 <div style={inputGroupStyle}>
                   <label style={labelStyle}>Branch Name</label>
                   <input

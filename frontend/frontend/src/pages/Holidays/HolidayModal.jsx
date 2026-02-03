@@ -36,7 +36,7 @@ export default function HolidayModal({
                 />
               </div>
 
-              <div className="col-md-6">
+              <div className="col-12 col-md-6">
                 <label className="form-label small fw-bold" style={{ color: '#2E1A47' }}>Date</label>
                 <input
                   type="date"
@@ -47,7 +47,7 @@ export default function HolidayModal({
                 />
               </div>
 
-              <div className="col-md-6">
+              <div className="col-12 col-md-6">
                 <label className="form-label small fw-bold" style={{ color: '#2E1A47' }}>Type</label>
                 <select
                   className="form-select border shadow-sm"

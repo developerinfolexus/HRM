@@ -319,7 +319,7 @@ const RecruitmentSettings = () => {
                                 </div>
                             </div>
                             <div className="row">
-                                <div className="col-md-6 mb-4">
+                                <div className="col-12 col-md-6 mb-4">
                                     <label className="form-label fw-semibold">Sync Frequency (Minutes)</label>
                                     <input
                                         type="number"
@@ -331,7 +331,7 @@ const RecruitmentSettings = () => {
                                         step="0.5"
                                     />
                                 </div>
-                                <div className="col-md-6 mb-4 d-flex align-items-center">
+                                <div className="col-12 col-md-6 mb-4 d-flex align-items-center">
                                     <div className="form-check form-switch mt-4">
                                         <input
                                             className="form-check-input"
@@ -359,7 +359,7 @@ const RecruitmentSettings = () => {
                     {/* Branding Settings Tab */}
                     {activeTab === 'branding' && (
                         <div className="row">
-                            <div className="col-lg-6">
+                            <div className="col-12 col-lg-6">
                                 <form onSubmit={handleSaveBranding}>
                                     <h5 className="mb-3 text-secondary">Company Details</h5>
                                     <div className="mb-3">
@@ -410,7 +410,7 @@ const RecruitmentSettings = () => {
                                 </form>
                             </div>
 
-                            <div className="col-lg-6">
+                            <div className="col-12 col-lg-6">
                                 <h5 className="mb-3 text-secondary">Live Preview (Letterhead)</h5>
                                 <div className="border rounded bg-white shadow-sm p-0 position-relative" style={{
                                     minHeight: '600px',

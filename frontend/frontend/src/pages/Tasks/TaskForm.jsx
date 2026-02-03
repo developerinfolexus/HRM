@@ -357,7 +357,7 @@ const TaskForm = ({ show = true, onClose, taskId, onSuccess }) => {
                                 {errors.description && <div className="small text-danger mt-1">{errors.description}</div>}
                             </div>
 
-                            <div className="col-md-4">
+                            <div className="col-12 col-md-4">
                                 <label style={labelStyle}>Directive Protocol</label>
                                 <select
                                     name="taskType"
@@ -373,7 +373,7 @@ const TaskForm = ({ show = true, onClose, taskId, onSuccess }) => {
                                 </select>
                             </div>
 
-                            <div className="col-md-4">
+                            <div className="col-12 col-md-4">
                                 <label style={labelStyle}>Urgency Tier</label>
                                 <select
                                     name="priority"
@@ -389,7 +389,7 @@ const TaskForm = ({ show = true, onClose, taskId, onSuccess }) => {
                                 </select>
                             </div>
 
-                            <div className="col-md-4">
+                            <div className="col-12 col-md-4">
                                 <label style={labelStyle}>Maturity Status</label>
                                 <select
                                     name="status"
@@ -407,14 +407,14 @@ const TaskForm = ({ show = true, onClose, taskId, onSuccess }) => {
                             <Users size={16} /> Asset Allocation
                         </div>
                         <div className="row g-4">
-                            <div className="col-md-6">
+                            <div className="col-12 col-md-6">
                                 <label style={labelStyle}>Division Unit</label>
                                 <select name="department" value={formData.department} onChange={handleChange} style={inputStyle(false)}>
                                     <option value="">Select Division</option>
                                     {departments.map(d => <option key={d} value={d}>{d}</option>)}
                                 </select>
                             </div>
-                            <div className="col-md-6">
+                            <div className="col-12 col-md-6">
                                 <label style={labelStyle}>Lead Agent <span className="text-danger">*</span></label>
                                 <select name="assignedTo" value={formData.assignedTo} onChange={handleChange} style={inputStyle(errors.assignedTo)} disabled={!formData.department}>
                                     <option value="">Select Personnel</option>
@@ -464,23 +464,23 @@ const TaskForm = ({ show = true, onClose, taskId, onSuccess }) => {
                             <Calendar size={16} /> Operational Lifecycle
                         </div>
                         <div className="row g-4">
-                            <div className="col-md-6">
+                            <div className="col-12 col-md-6">
                                 <label style={labelStyle}>Activation Date <span className="text-danger">*</span></label>
                                 <input type="date" name="startDate" value={formData.startDate} onChange={handleChange} style={inputStyle(errors.startDate)} />
                             </div>
-                            <div className="col-md-6">
+                            <div className="col-12 col-md-6">
                                 <label style={labelStyle}>Target Completion <span className="text-danger">*</span></label>
                                 <input type="date" name="dueDate" value={formData.dueDate} onChange={handleChange} style={inputStyle(errors.dueDate)} />
                             </div>
-                            <div className="col-md-4">
+                            <div className="col-12 col-md-4">
                                 <label style={labelStyle}>Projected Effort (Hrs)</label>
                                 <input type="number" name="estimatedHours" value={formData.estimatedHours} onChange={handleChange} style={inputStyle(false)} placeholder="0" />
                             </div>
-                            <div className="col-md-4">
+                            <div className="col-12 col-md-4">
                                 <label style={labelStyle}>Incurred Effort (Hrs)</label>
                                 <input type="number" name="actualHours" value={formData.actualHours} onChange={handleChange} style={inputStyle(false)} placeholder="0" />
                             </div>
-                            <div className="col-md-4">
+                            <div className="col-12 col-md-4">
                                 <label style={labelStyle}>Execution Maturity (%)</label>
                                 <input type="number" name="progressPercent" value={formData.progressPercent} onChange={handleChange} style={inputStyle(false)} min="0" max="100" />
                             </div>

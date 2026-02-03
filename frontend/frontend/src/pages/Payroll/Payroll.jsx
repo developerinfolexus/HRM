@@ -569,7 +569,7 @@ function PayrollModal({ editing, employees, month, year, onSave, onCancel }) {
           <form onSubmit={submit} id="payrollForm">
             {/* Basic Info */}
             <div className="row g-3 mb-4">
-              <div className="col-md-6">
+              <div className="col-12 col-md-6">
                 <label className="form-label small fw-bold" style={{ color: '#2E1A47' }}>Employee <span className="text-danger">*</span></label>
                 <select className="form-select border" style={{ borderColor: '#E6C7E6', borderRadius: '12px' }} value={form.employeeId} onChange={handleEmployeeChange} disabled={!!editing} required>
                   <option value="">Select Employee</option>
@@ -578,7 +578,7 @@ function PayrollModal({ editing, employees, month, year, onSave, onCancel }) {
                   ))}
                 </select>
               </div>
-              <div className="col-md-3">
+              <div className="col-6 col-md-3">
                 <label className="form-label small fw-semibold text-secondary">Month <span className="text-danger">*</span></label>
                 <select className="form-select" value={form.month} onChange={(e) => setNum("month", e.target.value)} required>
                   {Array.from({ length: 12 }, (_, i) => (
@@ -586,7 +586,7 @@ function PayrollModal({ editing, employees, month, year, onSave, onCancel }) {
                   ))}
                 </select>
               </div>
-              <div className="col-md-3">
+              <div className="col-6 col-md-3">
                 <label className="form-label small fw-semibold text-secondary">Year <span className="text-danger">*</span></label>
                 <input className="form-control" type="number" value={form.year} onChange={(e) => setNum("year", e.target.value)} required />
               </div>
@@ -594,7 +594,7 @@ function PayrollModal({ editing, employees, month, year, onSave, onCancel }) {
 
             <div className="row g-4">
               {/* Earnings Section */}
-              <div className="col-md-6">
+              <div className="col-12 col-md-6">
                 <div className="p-4 rounded-4 border h-100" style={{ backgroundColor: '#fdfbff', borderColor: '#E6C7E6' }}>
                   <div className="d-flex align-items-center mb-4">
                     <div className="bg-white p-2 rounded-circle text-purple-600 me-2 shadow-sm" style={{ color: '#663399' }}><FaFileInvoiceDollar size={20} /></div>
@@ -602,14 +602,14 @@ function PayrollModal({ editing, employees, month, year, onSave, onCancel }) {
                   </div>
 
                   <div className="row g-3">
-                    <div className="col-md-6">
+                    <div className="col-12 col-md-6">
                       <label className="form-label small fw-semibold">Basic Salary (Monthly)</label>
                       <div className="input-group">
                         <span className="input-group-text bg-white text-muted">₹</span>
                         <input className="form-control border-start-0 ps-1" type="number" value={form.basicSalary} onChange={(e) => setNum("basicSalary", e.target.value)} required />
                       </div>
                     </div>
-                    <div className="col-md-6">
+                    <div className="col-12 col-md-6">
                       <label className="form-label small fw-semibold text-muted">Per Day Salary</label>
                       <div className="input-group bg-light">
                         <span className="input-group-text bg-transparent text-muted">₹</span>
@@ -619,11 +619,11 @@ function PayrollModal({ editing, employees, month, year, onSave, onCancel }) {
                   </div>
 
                   <div className="row g-3 mt-1">
-                    <div className="col-md-6">
+                    <div className="col-12 col-md-6">
                       <label className="form-label small fw-semibold text-muted">Paid Days</label>
                       <input className="form-control bg-light" value={`${calculated.paidDays?.toFixed(2) || 0} / ${new Date(form.year, form.month, 0).getDate()}`} readOnly />
                     </div>
-                    <div className="col-md-6">
+                    <div className="col-12 col-md-6">
                       <label className="form-label small fw-semibold text-success">Earned Basic</label>
                       <div className="input-group bg-white border rounded">
                         <span className="input-group-text bg-transparent border-0 text-success">₹</span>
@@ -650,7 +650,7 @@ function PayrollModal({ editing, employees, month, year, onSave, onCancel }) {
               </div>
 
               {/* Deductions Section */}
-              <div className="col-md-6">
+              <div className="col-12 col-md-6">
                 <div className="p-4 rounded-4 border h-100" style={{ backgroundColor: '#fffafb', borderColor: '#fee2e2' }}>
                   <div className="d-flex align-items-center mb-4">
                     <div className="bg-white p-2 rounded-circle text-danger me-2 shadow-sm"><FiFilter size={20} /></div>
@@ -658,11 +658,11 @@ function PayrollModal({ editing, employees, month, year, onSave, onCancel }) {
                   </div>
 
                   <div className="row g-3">
-                    <div className="col-md-6">
+                    <div className="col-12 col-md-6">
                       <label className="form-label small fw-semibold text-danger">LOP Days</label>
                       <input className="form-control bg-white text-danger fw-bold" value={calculated.lopDays || 0} readOnly />
                     </div>
-                    <div className="col-md-6">
+                    <div className="col-12 col-md-6">
                       <label className="form-label small fw-semibold text-danger">LOP Amount</label>
                       <div className="input-group bg-white border border-danger-subtle rounded">
                         <span className="input-group-text bg-transparent border-0 text-danger">₹</span>
@@ -694,7 +694,7 @@ function PayrollModal({ editing, employees, month, year, onSave, onCancel }) {
                 <div className="p-4 rounded-4 border" style={{ backgroundColor: '#f8fafc', borderColor: '#E6C7E6' }}>
                   <div style={sectionHeaderStyle} className="mb-3">Processing Details</div>
                   <div className="row g-3">
-                    <div className="col-md-6">
+                    <div className="col-12 col-md-6">
                       <label className="form-label small fw-bold" style={{ color: '#2E1A47' }}>Payment Date</label>
                       <input className="form-control form-control-lg border" style={{ borderColor: '#E6C7E6', borderRadius: '12px' }} type="date" value={form.paymentDate} onChange={(e) => setForm(f => ({ ...f, paymentDate: e.target.value }))} />
                     </div>
@@ -716,19 +716,19 @@ function PayrollModal({ editing, employees, month, year, onSave, onCancel }) {
               <div className="col-12">
                 <div style={sectionHeaderStyle} className="mt-2 text-muted">Bank Information (Optional)</div>
                 <div className="row g-3">
-                  <div className="col-md-6">
+                  <div className="col-12 col-md-6">
                     <label className="form-label small text-muted">Account Number</label>
                     <input className="form-control" value={form.bankDetails.accountNumber} onChange={(e) => setForm(f => ({ ...f, bankDetails: { ...f.bankDetails, accountNumber: e.target.value } }))} placeholder="Acc. No." />
                   </div>
-                  <div className="col-md-6">
+                  <div className="col-12 col-md-6">
                     <label className="form-label small text-muted">Holder Name</label>
                     <input className="form-control" value={form.bankDetails.accountHolderName} onChange={(e) => setForm(f => ({ ...f, bankDetails: { ...f.bankDetails, accountHolderName: e.target.value } }))} placeholder="Holder Name" />
                   </div>
-                  <div className="col-md-4">
+                  <div className="col-12 col-md-4">
                     <label className="form-label small text-muted">IFSC Code</label>
                     <input className="form-control" value={form.bankDetails.ifscCode} onChange={(e) => setForm(f => ({ ...f, bankDetails: { ...f.bankDetails, ifscCode: e.target.value } }))} placeholder="IFSC" />
                   </div>
-                  <div className="col-md-8">
+                  <div className="col-12 col-md-8">
                     <label className="form-label small text-muted">Branch</label>
                     <input className="form-control" value={form.bankDetails.branchName} onChange={(e) => setForm(f => ({ ...f, bankDetails: { ...f.bankDetails, branchName: e.target.value } }))} placeholder="Branch Name" />
                   </div>

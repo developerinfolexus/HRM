@@ -224,7 +224,7 @@ const EmployeeDailyReport = () => {
                                     </div>
 
                                     {/* Status & Hours */}
-                                    <div className="grid grid-cols-2 gap-4">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <div>
                                             <label className="text-xs font-bold text-slate-400 uppercase tracking-wide mb-2 block">Status</label>
                                             <select

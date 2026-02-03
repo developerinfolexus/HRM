@@ -15,7 +15,7 @@ export default function LeaveDashboard() {
     <div className="py-2">
       <div className="row g-4">
 
-        <div className="col-md-4">
+        <div className="col-12 col-md-4">
           <Link to="/leave/approved" className="text-decoration-none">
             <div style={glassEffect} className="p-4 hover-lift h-100">
               <div className="d-flex justify-content-between align-items-start mb-3">
@@ -29,7 +29,7 @@ export default function LeaveDashboard() {
           </Link>
         </div>
 
-        <div className="col-md-4">
+        <div className="col-12 col-md-4">
           <Link to="/leave/pending" className="text-decoration-none">
             <div style={glassEffect} className="p-4 hover-lift h-100">
               <div className="d-flex justify-content-between align-items-start mb-3">
@@ -43,7 +43,7 @@ export default function LeaveDashboard() {
           </Link>
         </div>
 
-        <div className="col-md-4">
+        <div className="col-12 col-md-4">
           <Link to="/leave/rejected" className="text-decoration-none">
             <div style={glassEffect} className="p-4 hover-lift h-100">
               <div className="d-flex justify-content-between align-items-start mb-3">

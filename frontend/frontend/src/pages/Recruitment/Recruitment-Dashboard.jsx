@@ -43,7 +43,7 @@ const RecruitmentDashboard = () => {
 
         <div className="row g-4 mt-3">
           {cards.map((card, index) => (
-            <div className="col-md-6 col-lg-3" key={index}>
+            <div className="col-12 col-md-6 col-lg-3" key={index}>
               <div
                 className="card border-0 p-4 h-100"
                 style={{

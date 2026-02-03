@@ -55,9 +55,9 @@ const Register = () => {
                 </div>
 
                 <form onSubmit={handleSubmit} className="login-form">
-                    <div className="row">
-                        <div className="col-6">
-                            <div className="form-group">
+                    <div className="row g-3 mb-3">
+                        <div className="col-12 col-md-6">
+                            <div className="form-group mb-0">
                                 <label>First Name</label>
                                 <input
                                     type="text"
@@ -69,8 +69,8 @@ const Register = () => {
                                 />
                             </div>
                         </div>
-                        <div className="col-6">
-                            <div className="form-group">
+                        <div className="col-12 col-md-6">
+                            <div className="form-group mb-0">
                                 <label>Last Name</label>
                                 <input
                                     type="text"

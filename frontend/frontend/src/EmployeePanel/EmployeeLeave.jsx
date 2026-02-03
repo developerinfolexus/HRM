@@ -286,7 +286,7 @@ export default function EmployeeLeave() {
                                         </div>
                                     )}
                                     <div className="row g-3 mb-3">
-                                        <div className="col-md-6">
+                                        <div className="col-12 col-md-6">
                                             <label className="form-label">Start Date</label>
                                             <input
                                                 type="date"
@@ -296,7 +296,7 @@ export default function EmployeeLeave() {
                                                 required
                                             />
                                         </div>
-                                        <div className="col-md-6">
+                                        <div className="col-12 col-md-6">
                                             <label className="form-label">End Date</label>
                                             <input
                                                 type="date"
