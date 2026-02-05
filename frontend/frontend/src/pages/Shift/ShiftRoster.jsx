@@ -119,11 +119,11 @@ const formatDate = (date) => {
 export default function ShiftRoster({ shifts: availableShifts, employees = [], onRefreshShifts }) {
     const [viewMode, setViewMode] = useState('Week'); // 'Week' or 'Month'
     const [currentStart, setCurrentStart] = useState(getStartOfWeek(new Date()));
-    const [selectedDept, setSelectedDept] = useState('All');
+
 
     const [schedule, setSchedule] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [expandedDepts, setExpandedDepts] = useState({});
+
 
     const [showAssignModal, setShowAssignModal] = useState(false);
     const [showStatsModal, setShowStatsModal] = useState(false);
@@ -143,12 +143,7 @@ export default function ShiftRoster({ shifts: availableShifts, employees = [], o
         rotationShifts: []
     });
 
-    const toggleDept = (dept) => {
-        setExpandedDepts(prev => ({
-            ...prev,
-            [dept]: prev[dept] === undefined ? false : !prev[dept]
-        }));
-    };
+
 
     const [editingSchedule, setEditingSchedule] = useState(null);
 
@@ -291,9 +286,8 @@ export default function ShiftRoster({ shifts: availableShifts, employees = [], o
     };
 
     const handleSelectAllEmployees = () => {
-        const filteredEmps = selectedDept === 'All'
-            ? employees
-            : employees.filter(e => e.department === selectedDept);
+        const filteredEmps = employees; // Since we show all, basic select all selects everyone, or we can scoped it. But for now selecting all employees is safer.
+        // Actually the user removed filter, so Select All likely implicitly means "All visible", which is everyone.
 
         if (assignForm.employeeIds.length === filteredEmps.length) {
             setAssignForm(f => ({ ...f, employeeIds: [] }));
@@ -302,22 +296,8 @@ export default function ShiftRoster({ shifts: availableShifts, employees = [], o
         }
     };
 
-    // Get unique departments
-    const departments = ['All', ...new Set(employees.map(e => e.department).filter(Boolean))].sort();
 
-    // Filter employees for grid
-    const displayedEmployees = employees
-        .filter(e => selectedDept === 'All' || e.department === selectedDept)
-        .sort((a, b) => {
-            const getRank = (p) => {
-                const pos = (p || "").toLowerCase();
-                if (pos.includes('manager')) return 1;
-                if (pos.includes('lead') || pos.includes('tl')) return 2;
-                return 3;
-            };
-            // Use 'position' directly from employee object
-            return getRank(a.position) - getRank(b.position);
-        });
+
 
     return (
         <div className="pt-3">
@@ -362,16 +342,7 @@ export default function ShiftRoster({ shifts: availableShifts, employees = [], o
                     </div>
 
                     {/* Department Filter */}
-                    <select
-                        className="form-select shadow-sm"
-                        style={{ maxWidth: 200, borderColor: '#E6C7E6', color: '#663399', fontWeight: 600 }}
-                        value={selectedDept}
-                        onChange={e => setSelectedDept(e.target.value)}
-                    >
-                        {departments.map(d => <option key={d} value={d}>{d}</option>)}
-                    </select>
 
-                    <div className="vr h-100 mx-1" style={{ backgroundColor: '#E6C7E6' }}></div>
 
                     {/* Date Navigation */}
                     <div className="btn-group shadow-sm">
@@ -410,150 +381,127 @@ export default function ShiftRoster({ shifts: availableShifts, employees = [], o
                 </div>
             </div>
 
-            {/* Grid - Refactored to Cards */}
-            <div className="d-flex flex-column gap-4 pb-5">
-                {
-                    Object.entries(displayedEmployees.reduce((groups, emp) => {
-                        const dept = emp.department || 'Others';
-                        if (!groups[dept]) groups[dept] = [];
-                        groups[dept].push(emp);
-                        return groups;
-                    }, {})).sort(([a], [b]) => {
-                        if (a === 'Others') return 1;
-                        if (b === 'Others') return -1;
-                        return a.localeCompare(b);
-                    }).map(([dept, deptShortEmployees]) => {
-                        // Default to OPEN (true) if undefined. If strictly false, it's closed.
-                        const isExpanded = expandedDepts[dept] !== false;
 
-                        return (
-                            <div key={dept} className="card border-0 shadow-sm" style={{ borderRadius: 16, overflow: 'hidden', backgroundColor: '#fff' }}>
-                                {/* Card Header */}
-                                <div
-                                    className="card-header bg-white p-3 d-flex justify-content-between align-items-center"
-                                    onClick={() => toggleDept(dept)}
-                                    style={{
-                                        cursor: 'pointer',
-                                        borderBottom: isExpanded ? '1px solid #f3f4f6' : 'none',
-                                        transition: 'background-color 0.2s'
-                                    }}
-                                >
-                                    <div className="d-flex align-items-center gap-3">
-                                        <div className="rounded-circle d-flex align-items-center justify-content-center shadow-sm" style={{ width: 44, height: 44, backgroundColor: '#F3E8FF', color: '#663399', border: '1px solid #E6C7E6' }}>
-                                            <span className="fw-bold fs-5">{dept[0]}</span>
-                                        </div>
-                                        <div>
-                                            <h6 className="m-0 fw-bold fs-5" style={{ color: '#2E1A47', letterSpacing: '0.3px' }}>{dept}</h6>
-                                            <div className="small text-muted d-flex align-items-center gap-2">
-                                                <span className="badge rounded-pill bg-light text-dark border">{deptShortEmployees.length} Employees</span>
-                                                {!isExpanded && <span className="text-muted" style={{ fontSize: '0.8em' }}>Click to view details</span>}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <button className="btn btn-light rounded-circle shadow-sm p-2" style={{ width: 36, height: 36, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                        {isExpanded ? <FiChevronUp color="#663399" /> : <FiChevronDown color="#663399" />}
-                                    </button>
-                                </div>
 
-                                {/* Body (Table) */}
-                                {isExpanded && (
-                                    <div className="card-body p-0 animate__animated animate__fadeIn">
-                                        <div className="table-responsive">
-                                            <table className="table table-bordered mb-0" style={{ fontSize: '0.85rem' }}>
-                                                <thead className="bg-light">
-                                                    <tr>
-                                                        <th className="p-3 border-bottom shadow-sm position-sticky start-0" style={{ minWidth: 220, left: 0, zIndex: 6, backgroundColor: '#f9fafb', color: '#663399', letterSpacing: '0.5px', textTransform: 'uppercase', borderRight: '1px solid #e5e7eb' }}>Employee</th>
-                                                        {datesToDisplay.map(d => (
-                                                            <th key={d.toISOString()} className="p-2 text-center border-bottom bg-light" style={{ minWidth: viewMode === 'Week' ? 140 : 60, color: '#663399', borderLeft: '1px solid #f3f4f6' }}>
-                                                                <div className="small text-muted text-uppercase" style={{ fontSize: '0.7em', color: '#A3779D' }}>{d.toLocaleDateString(undefined, { weekday: 'short' })}</div>
-                                                                <div className="fw-bold fs-6">{d.getDate()}</div>
-                                                            </th>
-                                                        ))}
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {deptShortEmployees.map((emp, empIdx) => (
-                                                        <tr key={emp._id} style={{ backgroundColor: empIdx % 2 === 0 ? '#ffffff' : '#fcfcfc' }}>
-                                                            <td className="p-3 position-sticky start-0 border-end shadow-sm" style={{ left: 0, zIndex: 4, backgroundColor: empIdx % 2 === 0 ? '#ffffff' : '#fcfcfc', borderRight: '1px solid #e5e7eb' }}>
-                                                                <div className="d-flex align-items-center gap-3">
-                                                                    {emp.profileImage ? (
-                                                                        <img src={emp.profileImage.startsWith('http') ? emp.profileImage : `http://localhost:5000/${emp.profileImage}`} className="rounded-circle border shadow-sm" width="36" height="36" style={{ objectFit: 'cover', borderColor: '#E6C7E6' }} />
-                                                                    ) : (
-                                                                        <div className="rounded-circle d-flex align-items-center justify-content-center fw-bold shadow-sm" style={{ width: 36, height: 36, fontSize: 14, backgroundColor: '#F3E8FF', color: '#6A5ACD', border: '1px solid #E6C7E6' }}>
-                                                                            {emp.firstName?.[0]}
-                                                                        </div>
-                                                                    )}
-                                                                    <div className="d-flex flex-column" style={{ maxWidth: 160 }}>
-                                                                        <span className="fw-bold text-dark text-truncate" title={`${emp.firstName} ${emp.lastName}`}>{emp.firstName} {emp.lastName}</span>
-                                                                        <span className="small text-muted text-truncate" style={{ fontSize: '0.75em' }}>
-                                                                            {emp.position}
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                            {datesToDisplay.map(d => {
-                                                                const shifts = getShiftsForCell(emp._id, d);
-                                                                return (
-                                                                    <td key={d.toISOString()} className="p-1 align-middle position-relative shift-cell" style={{ minWidth: 120, borderRight: '1px dashed #e5e7eb' }}>
-                                                                        <div className="position-absolute top-0 end-0 p-1 add-shift-btn" style={{ zIndex: 5 }}>
-                                                                            <button
-                                                                                className="btn btn-link p-0 text-decoration-none"
-                                                                                onClick={() => handleAddShiftToCell(emp._id, d)}
-                                                                                title="Add Shift"
-                                                                                style={{ color: '#6A5ACD' }}
-                                                                            >
-                                                                                <FiPlus size={16} />
-                                                                            </button>
-                                                                        </div>
-
-                                                                        <div className="p-1 h-100 d-flex flex-column gap-1" style={{ minHeight: 50 }}>
-                                                                            {shifts.map((s, idx) => (
-                                                                                <div
-                                                                                    key={idx}
-                                                                                    className={`badge w-100 text-start p-2 shadow-sm position-relative rounded-2 ${s.isDoubleShift ? 'bg-danger bg-opacity-10 text-danger border border-danger' : ''}`}
-                                                                                    style={{
-                                                                                        fontWeight: 'normal',
-                                                                                        paddingRight: '20px',
-                                                                                        backgroundColor: s.isDoubleShift ? undefined : '#F3E8FF',
-                                                                                        color: s.isDoubleShift ? undefined : '#4C1D95',
-                                                                                        transition: 'all 0.2s',
-                                                                                        cursor: 'pointer',
-                                                                                        borderLeft: `3px solid ${s.isDoubleShift ? '#dc3545' : '#8B5CF6'}`
-                                                                                    }}
-                                                                                    onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)'; }}
-                                                                                    onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
-                                                                                    onClick={() => handleEditClick(s)}
-                                                                                >
-                                                                                    <div className="fw-bold text-truncate" style={{ fontSize: '0.8rem' }}>{s.shift ? s.shift.shiftName : s.type}</div>
-                                                                                    <div className="small opacity-75 text-truncate" style={{ fontSize: '0.7rem' }}>{s.startTime.slice(0, 5)} - {s.endTime.slice(0, 5)}</div>
-
-                                                                                    {s.isDoubleShift && <div className="badge bg-danger rounded-pill mt-1" style={{ fontSize: '0.6em' }}>Double</div>}
-                                                                                </div>
-                                                                            ))}
-                                                                            {shifts.length === 0 && (
-                                                                                <div
-                                                                                    className="text-center text-muted opacity-0 add-shift-placeholder rounded-2"
-                                                                                    style={{ height: '100%', minHeight: 40, display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'background-color 0.2s' }}
-                                                                                    onClick={() => handleAddShiftToCell(emp._id, d)}
-                                                                                >
-                                                                                    <span className="small text-uppercase fw-bold" style={{ fontSize: '0.6rem', letterSpacing: 1, color: '#A78BFA' }}>+ Add</span>
-                                                                                </div>
-                                                                            )}
-                                                                        </div>
-                                                                    </td>
-                                                                );
-                                                            })}
-                                                        </tr>
-                                                    ))}
-                                                </tbody>
-                                            </table >
-                                        </div >
-                                    </div>
-                                )}
+            {/* All Departments List */}
+            <div className="d-flex flex-column gap-5">
+                {Object.entries(employees.reduce((groups, emp) => {
+                    const dept = emp.department || 'Others';
+                    if (!groups[dept]) groups[dept] = [];
+                    groups[dept].push(emp);
+                    return groups;
+                }, {})).sort(([a], [b]) => {
+                    if (a === 'Others') return 1;
+                    if (b === 'Others') return -1;
+                    return a.localeCompare(b);
+                }).map(([dept, deptEmployees]) => (
+                    <div key={dept} className="department-section">
+                        <div className="d-flex align-items-center gap-3 mb-3">
+                            <div className="rounded-circle d-flex align-items-center justify-content-center shadow-sm" style={{ width: 44, height: 44, backgroundColor: '#F3E8FF', color: '#663399', border: '1px solid #E6C7E6' }}>
+                                <span className="fw-bold fs-5">{dept[0]}</span>
                             </div>
-                        );
-                    })
-                }
+                            <div>
+                                <h5 className="m-0 fw-bold" style={{ color: '#2E1A47' }}>{dept}</h5>
+                                <div className="small text-muted">{deptEmployees.length} Employees</div>
+                            </div>
+                        </div>
+
+                        <div className="card shadow-sm border-0 overflow-hidden" style={{ borderRadius: 16 }}>
+                            <div className="table-responsive">
+                                <table className="table table-bordered mb-0" style={{ fontSize: '0.85rem' }}>
+                                    <thead className="bg-light sticky-top" style={{ zIndex: 20 }}>
+                                        <tr>
+                                            <th className="p-3 border-bottom shadow-sm position-sticky start-0" style={{ minWidth: 250, left: 0, zIndex: 21, backgroundColor: '#f9fafb', color: '#663399', letterSpacing: '0.5px', textTransform: 'uppercase', borderRight: '1px solid #e5e7eb' }}>
+                                                Employee
+                                            </th>
+                                            {datesToDisplay.map(d => (
+                                                <th key={d.toISOString()} className="p-2 text-center border-bottom bg-light" style={{ minWidth: viewMode === 'Week' ? 140 : 60, color: '#663399', borderLeft: '1px solid #f3f4f6' }}>
+                                                    <div className="small text-muted text-uppercase" style={{ fontSize: '0.7em', color: '#A3779D' }}>{d.toLocaleDateString(undefined, { weekday: 'short' })}</div>
+                                                    <div className="fw-bold fs-6">{d.getDate()}</div>
+                                                </th>
+                                            ))}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {deptEmployees.map((emp, empIdx) => (
+                                            <tr key={emp._id} style={{ backgroundColor: empIdx % 2 === 0 ? '#ffffff' : '#fcfcfc' }}>
+                                                <td className="p-3 position-sticky start-0 border-end shadow-sm" style={{ left: 0, zIndex: 10, backgroundColor: empIdx % 2 === 0 ? '#ffffff' : '#fcfcfc', borderRight: '1px solid #e5e7eb' }}>
+                                                    <div className="d-flex align-items-center gap-3">
+                                                        {emp.profileImage ? (
+                                                            <img src={emp.profileImage.startsWith('http') ? emp.profileImage : `http://localhost:5000/${emp.profileImage}`} className="rounded-circle border shadow-sm" width="40" height="40" style={{ objectFit: 'cover', borderColor: '#E6C7E6' }} />
+                                                        ) : (
+                                                            <div className="rounded-circle d-flex align-items-center justify-content-center fw-bold shadow-sm" style={{ width: 40, height: 40, fontSize: 16, backgroundColor: '#F3E8FF', color: '#6A5ACD', border: '1px solid #E6C7E6' }}>
+                                                                {emp.firstName?.[0]}
+                                                            </div>
+                                                        )}
+                                                        <div className="d-flex flex-column" style={{ maxWidth: 180 }}>
+                                                            <span className="fw-bold text-dark text-truncate" title={`${emp.firstName} ${emp.lastName}`}>{emp.firstName} {emp.lastName}</span>
+                                                            <span className="small text-muted text-truncate" style={{ fontSize: '0.75em' }}>
+                                                                {emp.position}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                {datesToDisplay.map(d => {
+                                                    const shifts = getShiftsForCell(emp._id, d);
+                                                    return (
+                                                        <td key={d.toISOString()} className="p-1 align-middle position-relative shift-cell" style={{ minWidth: 120, borderRight: '1px dashed #e5e7eb' }}>
+                                                            <div className="position-absolute top-0 end-0 p-1 add-shift-btn" style={{ zIndex: 5 }}>
+                                                                <button
+                                                                    className="btn btn-link p-0 text-decoration-none"
+                                                                    onClick={() => handleAddShiftToCell(emp._id, d)}
+                                                                    title="Add Shift"
+                                                                    style={{ color: '#6A5ACD' }}
+                                                                >
+                                                                    <FiPlus size={16} />
+                                                                </button>
+                                                            </div>
+
+                                                            <div className="p-1 h-100 d-flex flex-column gap-1" style={{ minHeight: 60 }}>
+                                                                {shifts.map((s, idx) => (
+                                                                    <div
+                                                                        key={idx}
+                                                                        className={`badge w-100 text-start p-2 shadow-sm position-relative rounded-2 ${s.isDoubleShift ? 'bg-danger bg-opacity-10 text-danger border border-danger' : ''}`}
+                                                                        style={{
+                                                                            fontWeight: 'normal',
+                                                                            paddingRight: '20px',
+                                                                            backgroundColor: s.isDoubleShift ? undefined : '#F3E8FF',
+                                                                            color: s.isDoubleShift ? undefined : '#4C1D95',
+                                                                            transition: 'all 0.2s',
+                                                                            cursor: 'pointer',
+                                                                            borderLeft: `3px solid ${s.isDoubleShift ? '#dc3545' : '#8B5CF6'}`
+                                                                        }}
+                                                                        onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)'; }}
+                                                                        onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
+                                                                        onClick={() => handleEditClick(s)}
+                                                                    >
+                                                                        <div className="fw-bold text-truncate" style={{ fontSize: '0.8rem' }}>{s.shift ? s.shift.shiftName : s.type}</div>
+                                                                        <div className="small opacity-75 text-truncate" style={{ fontSize: '0.7rem' }}>{s.startTime.slice(0, 5)} - {s.endTime.slice(0, 5)}</div>
+
+                                                                        {s.isDoubleShift && <div className="badge bg-danger rounded-pill mt-1" style={{ fontSize: '0.6em' }}>Double</div>}
+                                                                    </div>
+                                                                ))}
+                                                                {shifts.length === 0 && (
+                                                                    <div
+                                                                        className="text-center text-muted opacity-0 add-shift-placeholder rounded-2"
+                                                                        style={{ height: '100%', minHeight: 40, display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'background-color 0.2s' }}
+                                                                        onClick={() => handleAddShiftToCell(emp._id, d)}
+                                                                    >
+                                                                        <span className="small text-uppercase fw-bold" style={{ fontSize: '0.6rem', letterSpacing: 1, color: '#A78BFA' }}>+ Add</span>
+                                                                    </div>
+                                                                )}
+                                                            </div>
+                                                        </td>
+                                                    );
+                                                })}
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                ))}
             </div>
 
             {/* Modal - Manager */}

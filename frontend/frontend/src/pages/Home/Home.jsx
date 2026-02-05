@@ -824,7 +824,7 @@ const Home = () => {
             <section className="py-24 relative overflow-hidden">
                 <div className="absolute inset-0 bg-[#663399]">
                     <div className="absolute inset-0 bg-gradient-to-br from-[#663399] to-[#2E1A47]"></div>
-                    <div className="absolute top-0 left-0 w-full h-full bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
+                    <div className="absolute top-0 left-0 w-full h-full opacity-20"></div>
                     <div className="absolute -top-[50%] -left-[20%] w-[150%] h-[150%] bg-gradient-to-tr from-transparent via-[#A3779D]/30 to-transparent animate-blob"></div>
                 </div>
 

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../../services/api"; // centralized api
+import axios from "axios"; // keep axios if strictly needed for generic things, but preferably use api
+
 import { toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
 import {
@@ -67,10 +69,7 @@ const RecruitmentSettings = () => {
     const fetchSettings = async () => {
         try {
             const token = localStorage.getItem("token");
-            const response = await axios.get(
-                `${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/recruitment-settings`,
-                { headers: { Authorization: `Bearer ${token}` } }
-            );
+            const response = await api.get('/recruitment-settings');
             if (response.data.success) {
                 setSettings(response.data.data);
             }
@@ -83,10 +82,7 @@ const RecruitmentSettings = () => {
     const fetchBranding = async () => {
         try {
             const token = localStorage.getItem("token");
-            const response = await axios.get(
-                `${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/recruitment-settings/branding`,
-                { headers: { Authorization: `Bearer ${token}` } }
-            );
+            const response = await api.get('/recruitment-settings/branding');
             if (response.data.success) {
                 setBranding(response.data.data);
                 // Set initial previews
@@ -114,10 +110,9 @@ const RecruitmentSettings = () => {
         setLoading(true);
         try {
             const token = localStorage.getItem("token");
-            const response = await axios.put(
-                `${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/recruitment-settings`,
-                settings,
-                { headers: { Authorization: `Bearer ${token}` } }
+            const response = await api.put(
+                '/recruitment-settings',
+                settings
             );
             if (response.data.success) toast.success("Settings updated successfully!");
             else toast.error(response.data.message);
@@ -132,10 +127,9 @@ const RecruitmentSettings = () => {
         setSyncing(true);
         try {
             const token = localStorage.getItem("token");
-            const response = await axios.post(
-                `${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/recruitment-settings/sync`,
-                { googleSpreadsheetId: settings.googleSpreadsheetId },
-                { headers: { Authorization: `Bearer ${token}` } }
+            const response = await api.post(
+                '/recruitment-settings/sync',
+                { googleSpreadsheetId: settings.googleSpreadsheetId }
             );
             if (response.data.success) toast.success(`Sync Complete: ${response.data.data.message}`);
             else toast.error(response.data.message);
@@ -202,12 +196,11 @@ const RecruitmentSettings = () => {
             if (signatureFile) formData.append('signature', signatureFile);
             if (letterPadFile) formData.append('letterPad', letterPadFile);
 
-            const response = await axios.put(
-                `${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/recruitment-settings/branding`,
+            const response = await api.put(
+                '/recruitment-settings/branding',
                 formData,
                 {
                     headers: {
-                        Authorization: `Bearer ${token}`,
                         'Content-Type': 'multipart/form-data'
                     }
                 }
@@ -501,9 +494,7 @@ const EmployeeSelectionModal = ({ onSelect, onCancel }) => {
         const fetchEmployees = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const res = await axios.get(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/employees?limit=1000`, {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
+                const res = await api.get('/employees?limit=1000');
                 if (res.data.success) {
                     setEmployees(res.data.data.employees);
                 }
@@ -589,9 +580,7 @@ const LetterTemplatesTab = () => {
     const fetchTemplates = async () => {
         try {
             const token = localStorage.getItem('token');
-            const res = await axios.get(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/recruitment-settings/templates`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
+            const res = await api.get('/recruitment-settings/templates');
             if (res.data.success) setTemplates(res.data.data);
         } catch (error) {
             console.error(error);
@@ -602,9 +591,7 @@ const LetterTemplatesTab = () => {
         if (!window.confirm('Are you sure you want to delete this template?')) return;
         try {
             const token = localStorage.getItem('token');
-            await axios.delete(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/recruitment-settings/templates/${id}`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
+            await api.delete(`/recruitment-settings/templates/${id}`);
             toast.success('Template deleted');
             setRefresh(!refresh);
         } catch (error) {
@@ -619,10 +606,10 @@ const LetterTemplatesTab = () => {
 
         try {
             const token = localStorage.getItem('token');
-            const res = await axios.post(
-                `${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/recruitment-settings/templates/upload`,
+            const res = await api.post(
+                '/recruitment-settings/templates/upload',
                 formData,
-                { headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' } }
+                { headers: { 'Content-Type': 'multipart/form-data' } }
             );
 
             if (res.data.success) {
@@ -670,9 +657,7 @@ const LetterTemplatesTab = () => {
         try {
             const token = localStorage.getItem("token");
             await Promise.all(selectedTemplateIds.map(id =>
-                axios.delete(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/recruitment-settings/templates/${id}`, {
-                    headers: { Authorization: `Bearer ${token}` }
-                })
+                api.delete(`/recruitment-settings/templates/${id}`)
             ));
 
             toast.success("Templates deleted successfully");
@@ -709,11 +694,11 @@ const LetterTemplatesTab = () => {
 
         try {
             const token = localStorage.getItem('token');
-            const res = await axios.post(
-                `${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/recruitment-settings/templates/upload/direct`,
+            const res = await api.post(
+                '/recruitment-settings/templates/upload/direct',
                 formData,
                 {
-                    headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' },
+                    headers: { 'Content-Type': 'multipart/form-data' },
                     params: {
                         employeeId: selectedEmployee._id,
                         letterType: selectedCategory
@@ -775,13 +760,9 @@ const LetterTemplatesTab = () => {
         try {
             // Call Generate Endpoint
             const token = localStorage.getItem('token');
-            const response = await axios.post(
-                `${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/employees/${selectedEmployee._id}/generate-letter`,
-                letterForm,
-                {
-                    headers: { Authorization: `Bearer ${token}` }
-                    // Removed responseType: 'blob' as we now expect JSON
-                }
+            const response = await api.post(
+                `/employees/${selectedEmployee._id}/generate-letter`,
+                letterForm
             );
 
             if (response.data.success) {
