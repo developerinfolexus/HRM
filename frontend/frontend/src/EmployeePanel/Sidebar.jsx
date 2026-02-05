@@ -30,7 +30,7 @@ const Sidebar = ({ collapsed, setCollapsed, darkMode }) => {
         { path: "/employee/dashboard", label: "Dashboard", icon: <FaTachometerAlt />, color: "#6366f1" },
         {
             path: "/employee/ai-assistant",
-            label: " AIChat",
+            label: "Chat HUB",
             icon: <FaRobot />,
             color: "#8B5CF6",
             badge: totalUnreadCount > 0 ? totalUnreadCount : null

@@ -35,7 +35,7 @@ const Sidebar = ({ collapsed, setCollapsed, darkMode, setDarkMode, isMobile }) =
     { path: "/dashboard", label: "Dashboard", icon: <FaTachometerAlt />, color: "#8B5CF6" },
     {
       path: "/ai-assistant",
-      label: "AI Chat",
+      label: "Chat HUB",
       icon: <FaRobot />,
       color: "#8B5CF6",
       badge: totalUnreadCount > 0 ? totalUnreadCount : null
