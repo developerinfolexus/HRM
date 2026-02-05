@@ -135,12 +135,12 @@ const AddExpenseModal = ({ isOpen, onClose, onSubmit, editData }) => {
 
     return (
         <AnimatePresence>
-            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+            <div className="fixed inset-0 z-[1050] flex items-start justify-center pt-16 p-4 bg-black/60 backdrop-blur-sm" style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'center', paddingTop: '80px' }}>
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95, y: 20 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                    className="bg-white rounded-3xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col"
+                    className="bg-white rounded-3xl shadow-2xl w-full max-w-4xl max-h-[85vh] overflow-hidden flex flex-col"
                     style={{ border: '1px solid #E6C7E6' }}
                 >
                     {/* Header */}

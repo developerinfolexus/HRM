@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { createProject, updateProject } from "../../services/projectService";
 import ProjectDashboard from "./ProjectDashboard";
-import ProjectStatus from "./ProjectStatus";
-import ProjectDetails from "./ProjectDetails";
-import Team from "./Team";
-import Department from "./Department";
+import ProjectStatus from "./ProjectStatus"; // Now Resource Status
+import ProjectDetails from "./ProjectDetails"; // Now Strategic Overview
+import AssetDeployment from "./AssetDeployment"; // New
+import DivisionAllocation from "./DivisionAllocation"; // New
 import ProjectForm from "./ProjectForm";
 import { FaPlus, FaCloudDownloadAlt, FaProjectDiagram } from "react-icons/fa";
 
@@ -50,8 +50,8 @@ export default function Projects() {
     { id: "dashboard", label: "Operations Dashboard" },
     { id: "status", label: "Resource Status" },
     { id: "details", label: "Strategic Overview" },
-    { id: "team", label: "Asset Deployment" },
-    { id: "department", label: "Division Allocation" },
+    { id: "assets", label: "Asset Deployment" },
+    { id: "allocation", label: "Division Allocation" },
   ];
 
   const tabStyle = (active) => ({
@@ -131,8 +131,8 @@ export default function Projects() {
         {page === "dashboard" && <ProjectDashboard key={refreshKey} onEdit={openEditProject} onRefresh={() => setRefreshKey(prev => prev + 1)} />}
         {page === "status" && <ProjectStatus onEdit={openEditProject} />}
         {page === "details" && <ProjectDetails />}
-        {page === "team" && <Team />}
-        {page === "department" && <Department />}
+        {page === "assets" && <AssetDeployment />}
+        {page === "allocation" && <DivisionAllocation />}
       </div>
 
       {/* POPUP FORM */}
