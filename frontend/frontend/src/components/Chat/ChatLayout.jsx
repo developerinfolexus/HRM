@@ -6,10 +6,12 @@ import { MessageSquare } from 'lucide-react';
 import './Chat.css';
 
 const ChatLayout = () => {
-    const { conversations, activeConversation, loading, connected } = useChat();
+    const { conversations, activeConversation, setActiveConversation, loading, connected } = useChat();
 
     useEffect(() => {
         console.log("🟣 PURPLE THEME LOADED - ChatLayout Mounted");
+        // Reset active conversation when entering the chat hub
+        setActiveConversation(null);
     }, []);
 
     return (
