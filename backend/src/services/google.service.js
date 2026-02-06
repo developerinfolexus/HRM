@@ -6,7 +6,7 @@ const path = require('path');
 const logger = require('../utils/logger');
 const fs = require('fs');
 
-const SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly', 'https://www.googleapis.com/auth/drive.readonly'];
+const SCOPES = ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/drive.readonly'];
 const CREDENTIALS_PATH = path.join(__dirname, '../../credentials.json');
 
 // Initialize Google Auth
@@ -54,6 +54,37 @@ const getSheetData = async (spreadsheetId, range) => {
 };
 
 /**
+ * Append a row to a Google Sheet
+ * @param {string} spreadsheetId 
+ * @param {string} range 
+ * @param {Array<string>} values 
+ */
+const appendSheetRow = async (spreadsheetId, range, values) => {
+    try {
+        const authClient = await getAuthClient();
+        if (!authClient) return null;
+
+        const sheets = google.sheets({ version: 'v4', auth: authClient });
+
+        const resource = {
+            values: [values],
+        };
+
+        const response = await sheets.spreadsheets.values.append({
+            spreadsheetId,
+            range,
+            valueInputOption: 'USER_ENTERED',
+            resource,
+        });
+
+        return response.data;
+    } catch (error) {
+        logger.error('Error appending row to Google Sheet:', error);
+        throw error;
+    }
+};
+
+/**
  * Fetch Spreadsheet Metadata (to get sheet names)
  * @param {string} spreadsheetId 
  * @returns {Promise<Object>} Metadata
@@ -74,6 +105,72 @@ const getSheetMetadata = async (spreadsheetId) => {
         throw error;
     }
 };
+
+/**
+ * Upload a Base64 file to Google Drive and return valid link
+ * @param {string} base64Data 
+ * @param {string} fileName 
+ * @returns {Promise<string>} Web View Link
+ */
+const uploadFileToDrive = async (base64Data, fileName) => {
+    try {
+        const authClient = await getAuthClient();
+        if (!authClient) return null;
+
+        const drive = google.drive({ version: 'v3', auth: authClient });
+
+        // Clean base64 string
+        const matches = base64Data.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+        let mimeType = 'application/octet-stream';
+        let buffer = null;
+
+        if (matches && matches.length === 3) {
+            mimeType = matches[1];
+            buffer = Buffer.from(matches[2], 'base64');
+        } else {
+            // Try assuming it is raw base64
+            buffer = Buffer.from(base64Data, 'base64');
+        }
+
+        const { Readable } = require('stream');
+        const bufferStream = new Readable();
+        bufferStream.push(buffer);
+        bufferStream.push(null);
+
+        // Upload
+        const fileMetadata = {
+            name: fileName,
+        };
+        const media = {
+            mimeType: mimeType,
+            body: bufferStream,
+        };
+
+        const response = await drive.files.create({
+            resource: fileMetadata,
+            media: media,
+            fields: 'id, webViewLink, webContentLink',
+        });
+
+        const fileId = response.data.id;
+        const link = response.data.webViewLink;
+
+        // Make it public (or readable by anyone with link) so Sheet viewers can see it
+        await drive.permissions.create({
+            fileId: fileId,
+            requestBody: {
+                role: 'reader',
+                type: 'anyone',
+            },
+        });
+
+        return link;
+
+    } catch (error) {
+        logger.error("Error uploading file to Drive:", error);
+        throw error;
+    }
+}
 
 /**
  * Download a file from Google Drive
@@ -140,7 +237,9 @@ const extractDriveFileId = (url) => {
 
 module.exports = {
     getSheetData,
-    getSheetMetadata, // Added
+    appendSheetRow,
+    uploadFileToDrive, // Added this
+    getSheetMetadata,
     downloadFile,
     extractDriveFileId
 };

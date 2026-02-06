@@ -15,6 +15,10 @@ const recruitmentSettingsSchema = new mongoose.Schema({
     isAutoSyncEnabled: {
         type: Boolean,
         default: true
+    },
+    internalResponseSpreadsheetId: {
+        type: String,
+        default: ''
     }
 }, { timestamps: true });
 

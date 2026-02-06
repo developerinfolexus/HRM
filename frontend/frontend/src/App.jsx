@@ -45,7 +45,8 @@ import RecruitmentDashboard from "./pages/Recruitment/Recruitment-Dashboard";
 import Candidate from "./pages/Recruitment/Candidate";
 import Interview from "./pages/Recruitment/Interview";
 import JobDescriptions from "./pages/Recruitment/JobDescriptions";
-import RecruitmentSettings from "./pages/Recruitment/RecruitmentSettings"; // Added
+import RecruitmentSettings from "./pages/Recruitment/RecruitmentSettings";
+import PublicJobApplication from "./pages/Recruitment/PublicJobApplication"; // Added
 import AnalyticsDashboard from "./pages/Analytics/AnalyticsDashboard";
 import AIAssistant from "./EmployeePanel/AIAssistant/AIAssistant"; // Added import
 import ChatLayout from "./components/Chat/ChatLayout"; // Added import
@@ -117,7 +118,7 @@ const AppLayout = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const location = useLocation();
-  const isAuthPage = location.pathname === '/login' || location.pathname === '/register' || location.pathname === '/walkthrough';
+  const isAuthPage = location.pathname === '/login' || location.pathname === '/register' || location.pathname === '/walkthrough' || location.pathname.startsWith('/apply');
   const hideSidebarAndHeader = isAuthPage || location.pathname === '/home';
   // Only match employee panel routes (/employee/...), not /employees
   const isEmployeePage = location.pathname.startsWith('/employee/') || location.pathname === '/employee';
@@ -182,6 +183,8 @@ const AppLayout = () => {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/verify-otp" element={<VerifyOTP />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/apply" element={<PublicJobApplication />} />
+          <Route path="/apply/:jobId" element={<PublicJobApplication />} />
 
           <Route path="/" element={<RootRoute />} />
 

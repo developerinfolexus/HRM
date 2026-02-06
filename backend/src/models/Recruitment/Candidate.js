@@ -41,6 +41,10 @@ const candidateSchema = new mongoose.Schema({
     referralName: {
         type: String
     },
+    address: { type: String, trim: true },
+    currentLocation: { type: String, trim: true },
+    comments: { type: String },
+    experienceLevel: { type: String }, // Stores "Fresher", "1-3", etc.
     status: {
         type: String,
         enum: ['New', 'Screening', 'Interviewing', 'Selected', 'Rejected', 'JD Not Available'], // Added 'JD Not Available'
@@ -144,6 +148,10 @@ const candidateSchema = new mongoose.Schema({
         unique: true,
         sparse: true // Allow null for manually created candidates
     },
+    customResponses: [{
+        label: String,
+        answer: mongoose.Schema.Types.Mixed // String, Number, etc.
+    }],
     createdAt: {
         type: Date,
         default: Date.now

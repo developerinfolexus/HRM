@@ -22,26 +22,41 @@ const processMyResume = async (candidateData) => {
 
             const buffer = Buffer.from(base64Data, 'base64');
 
-            // 1. Extract Text
+            // 1. Save Resume File to Disk (Permanent Store)
+            const uploadsDir = path.join(process.cwd(), 'uploads', 'resumes');
+            if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
+
+            const safeName = candidateData.name.replace(/[^a-zA-Z0-9]/g, '_');
+            const fileName = `${safeName}_${Date.now()}.pdf`; // Unique filename
+            const filePath = path.join(uploadsDir, fileName);
+            fs.writeFileSync(filePath, buffer);
+
+            // Update candidate data with actual filename
+            candidateData.resume = fileName;
+            console.log(`Saved resume to: ${filePath}`);
+
+            // 2. Extract Text
+            console.log("Starting text extraction for manual upload...");
             const resumeText = await recruitmentService.extractTextFromResume(buffer, mimeType);
             candidateData.resumeText = resumeText;
+            console.log(`Manual Upload - Extracted Text Length: ${resumeText ? resumeText.length : 0}`);
 
             if (resumeText) {
-                // 2. Analyze Resume
+                // 3. Analyze Resume
                 const parsedData = recruitmentService.analyzeResume(resumeText);
 
                 // Merge Parsed Data
                 candidateData.extractedSkills = parsedData.extractedSkills;
                 candidateData.extractedExperience = parsedData.extractedExperience;
-                // Directly assign arrays from parsed data
                 candidateData.projects = parsedData.projects || [];
                 candidateData.certifications = parsedData.certifications || [];
                 candidateData.companies = parsedData.companies || [];
                 candidateData.internships = parsedData.internships || [];
                 candidateData.isFresher = parsedData.isFresher;
 
-                // 3. Find JD & Calculate Score
+                // 4. Find JD & Calculate Score
                 if (candidateData.appliedFor) {
+                    console.log(`Finding JD for role: ${candidateData.appliedFor}`);
                     const jd = await JobDescription.findOne({
                         $or: [
                             { title: { $regex: new RegExp(`^${candidateData.appliedFor}$`, 'i') } },
@@ -52,22 +67,26 @@ const processMyResume = async (candidateData) => {
                     });
 
                     if (jd) {
+                        console.log(`Found JD: ${jd.title}`);
                         const atsResult = recruitmentService.calculateATSScore(resumeText, jd, parsedData);
                         candidateData.atsScore = atsResult.score;
                         candidateData.atsScoreBreakdown = atsResult.breakdown;
                         candidateData.matchedSkills = atsResult.matchedSkills;
                         candidateData.missingSkills = atsResult.missingSkills;
                         candidateData.jobDescription = jd._id;
-                        candidateData.status = candidateData.status === 'New' ? 'New' : candidateData.status; // Keep existing if not new
+                        candidateData.status = candidateData.status === 'New' ? 'New' : candidateData.status;
                     } else {
+                        console.warn(`No matching JD found for: ${candidateData.appliedFor}. Setting ATS Score to 0.`);
                         candidateData.atsScore = 0;
                         candidateData.status = 'JD Not Available';
                     }
                 }
+            } else {
+                console.warn("No text extracted from resume.");
             }
         }
     } catch (e) {
-        logger.error("Resume processing failed during manual save", e);
+        console.error("Resume processing failed during manual save", e);
     }
 };
 

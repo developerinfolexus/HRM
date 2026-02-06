@@ -6,6 +6,9 @@ let base = import.meta.env.VITE_API_URL || '';
 if (!base) {
     if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
         base = 'http://localhost:5000';
+    } else if (window.location.port === '5173' && window.location.hostname.match(/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/)) {
+        // If accessed via IP on port 5173 (dev mode), assume backend is on same IP port 5000
+        base = `http://${window.location.hostname}:5000`;
     } else {
         base = 'https://hrm-backend-b3sz.onrender.com';
     }

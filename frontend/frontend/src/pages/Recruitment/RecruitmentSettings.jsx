@@ -25,7 +25,9 @@ import {
     Award,
     LogOut,
     UploadCloud,
-    X
+    X,
+    PencilLine, // Added
+    Link as LinkIcon // Added just in case
 } from "lucide-react";
 import DesignSelection from "../../components/Recruitment/DesignSelection";
 
@@ -35,6 +37,7 @@ const RecruitmentSettings = () => {
     // General Settings State
     const [settings, setSettings] = useState({
         googleSpreadsheetId: "",
+        internalResponseSpreadsheetId: "",
         syncFrequencyMinutes: 60,
         isAutoSyncEnabled: true,
     });
@@ -297,18 +300,41 @@ const RecruitmentSettings = () => {
                     {/* General Settings Tab */}
                     {activeTab === 'general' && (
                         <form onSubmit={handleSaveSettings}>
-                            <div className="mb-4">
-                                <label className="form-label fw-semibold">Google Spreadsheet ID</label>
-                                <input
-                                    type="text"
-                                    className="form-control form-control-lg"
-                                    name="googleSpreadsheetId"
-                                    value={settings.googleSpreadsheetId}
-                                    onChange={handleSettingsChange}
-                                    placeholder="Enter the ID from your Google Sheet URL"
-                                />
-                                <div className="form-text" style={{ color: '#A3779D' }}>
-                                    Extract this from the URL: https://docs.google.com/spreadsheets/d/<b>SPREADSHEET_ID</b>/edit
+                            <div className="row g-4 mb-4">
+                                <div className="col-12">
+                                    <label className="form-label fw-semibold text-primary">1. Google Form Import Source</label>
+                                    <input
+                                        type="text"
+                                        className="form-control form-control-lg"
+                                        name="googleSpreadsheetId"
+                                        value={settings.googleSpreadsheetId}
+                                        onChange={handleSettingsChange}
+                                        placeholder="Spreadsheet ID to IMPORT candidates from"
+                                    />
+                                    <div className="form-text text-muted">
+                                        Candidates from this sheet will be imported into the system.
+                                    </div>
+                                </div>
+                                <div className="col-12">
+                                    <label className="form-label fw-semibold text-success">2. Internal Application Export Destination</label>
+                                    <input
+                                        type="text"
+                                        className="form-control form-control-lg"
+                                        name="internalResponseSpreadsheetId"
+                                        value={settings.internalResponseSpreadsheetId}
+                                        onChange={handleSettingsChange}
+                                        placeholder="Spreadsheet ID to EXPORT internal applications to"
+                                    />
+                                    <div className="form-text text-muted">
+                                        Applications submitted via the internal form will be appended to this sheet.
+                                    </div>
+                                </div>
+                                <div className="col-12">
+                                    <div className="alert alert-info py-2 small">
+                                        <div className="fw-bold mb-1">Setup Instructions:</div>
+                                        1. Extract ID from URL: https://docs.google.com/spreadsheets/d/<b>SPREADSHEET_ID</b>/edit<br />
+                                        2. Share the sheet with: <b>hrm-google-sync@hrms-484804.iam.gserviceaccount.com</b> (Editor Access)
+                                    </div>
                                 </div>
                             </div>
                             <div className="row">

@@ -67,6 +67,8 @@ app.get('/health', (req, res) => {
 
 // API Routes
 console.log("Restarting server routes..."); // Force restart
+const publicRecruitmentRoutes = require('./routes/recruitment/public.routes');
+app.use('/api/public/recruitment', publicRecruitmentRoutes);
 app.use('/api', routes);
 
 // 404 handler
